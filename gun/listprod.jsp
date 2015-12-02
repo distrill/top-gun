@@ -117,10 +117,14 @@ try
 	// }
 
 	ResultSet rst = pstmt.executeQuery();
-	
+
 	out.println("<table border=1><tr><th>Product Name</th><th>Classification</th><th>Price</th></tr>");
     while (rst.next()) {
-    	out.println("<tr><td><a href=gunproduct.jsp?id="+ rst.getInt("pid") +">"+rst.getString("name")+"</a></td><td>"+ rst.getString("classification")+"</td><td>"+currFormat.format(rst.getDouble("price"))+"</td></tr>");
+    	out.print("<tr><td><a href=gunproduct.jsp?id="+ rst.getInt("pid") +">"
+            +rst.getString("name")+"</a></td><td>"+ rst.getString("classification")
+            +"</td><td>"+currFormat.format(rst.getDouble("price"))+"</td><td>"
+            +"<a href=\"addcart.jsp?id=" + rst.getInt("pid") + "&name=" + rst.getString("name")
+        	+"&price=" + rst.getDouble("price") + "\">Add to Cart</a></td></tr>");
     }
 
 	// out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
