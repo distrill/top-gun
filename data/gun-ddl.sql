@@ -35,6 +35,8 @@ CREATE TABLE GunCustomer (
     address VARCHAR(100),
     province CHAR(2),
     tid INT,
+    email VARCHAR(40),
+    password VARCHAR(255),
     PRIMARY KEY (cid),
     FOREIGN KEY (tid) REFERENCES GunToken(tid)
         ON DELETE SET NULL
@@ -99,7 +101,7 @@ INSERT INTO GunToken VALUES(789, 'classified', '2015-11-11');
 INSERT INTO GunToken VALUES(890, 'classified', '2015-10-11');
 
 INSERT INTO GunProduct VALUES (1234, 'Hand Gun', 150, 'restricted', 123.34);
-INSERT INTO GunProduct VALUES (2345, 'Hunting Rifle', 150, 'unrestricted', 99.99);
+INSERT INTO GunProduct VALUES (2345, 'Rifle', 150, 'unrestricted', 99.99);
 INSERT INTO GunProduct VALUES (3456, 'Big Huting Rifle', 150, 'restricted', 120.50);
 INSERT INTO GunProduct VALUES (4567, 'Shotgun', 200, 'unrestricted', 120.50);
 INSERT INTO GunProduct VALUES (5678, 'Big Shotgun', 200, 'restricted', 159.90);
