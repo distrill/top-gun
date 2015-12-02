@@ -1,6 +1,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
@@ -17,7 +18,7 @@
 
 <form method="get" action="listprod.jsp">
   <p align="left">
-  <select size="1" name="categoryName">
+  <select size="1" name="gunType">
   <option>All</option>
 
 <%
@@ -36,14 +37,11 @@ catch (SQLException ex)
 */
 %>
 
-  <option>Beverages</option>
-  <option>Condiments</option>
-  <option>Confections</option>
-  <option>Dairy Products</option>
-  <option>Grains/Cereals</option>
-  <option>Meat/Poultry</option>
-  <option>Produce</option>
-  <option>Seafood</option>
+  <option>Assault Rifle</option>
+  <option>Handgun</option>
+  <option>Shotgun</option>
+  <option>Hunting Rifles</option>
+
 
   <input type="text" name="productName" size="50">
   </select><input type="submit" value="Submit"><input type="reset" value="Reset"></p>
@@ -65,39 +63,40 @@ colors.put("Seafood", "#FF66CC");
 <%
 	// Get product name to search for
 String name = request.getParameter("productName");
-String category = request.getParameter("categoryName");
+String category = request.getParameter("gunType");
+
 
 boolean hasNameParam = name != null && !name.equals("");
 boolean hasCategoryParam = category != null && !category.equals("") && !category.equals("All");
 String filter = "", sql = "";
 
-// if (hasNameParam && hasCategoryParam)
-// {
-// 	filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
-// 	name = '%'+name+'%';
-// 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ? AND categoryName = ?";
-// }
-// else if (hasNameParam)
-// {
-// 	filter = "<h3>Products containing '"+name+"'</h3>";
-// 	name = '%'+name+'%';
-// 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ?";
-// }
-// else if (hasCategoryParam)
-// {
-// 	filter = "<h3>Products in category: '"+category+"'</h3>";
-// 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE categoryName = ?";
-// }
-// else
-// {
-// 	filter = "<h3>All Products</h3>";
-// 	sql = "SELECT productId, productName, price, categoryName FROM Product";
-// }
+/*  if (hasNameParam && hasCategoryParam)
+ {
+ 	filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
+ 	name = '%'+name+'%';
+ 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ? AND categoryName = ?";
+ }
+ else if (hasNameParam)
+ {
+ 	filter = "<h3>Products containing '"+name+"'</h3>";
+ 	name = '%'+name+'%';
+ 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ?";
+ }
+ else if (hasCategoryParam)
+ {
+ 	filter = "<h3>Products in category: '"+category+"'</h3>";
+ 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE categoryName = ?";
+ }
+ else
+ {
+ 	filter = "<h3>All Products</h3>";
+ 	sql = "SELECT productId, productName, price, categoryName FROM Product";
+ } */
 
 out.println("All Gun Products");
 
-sql  = "SELECT * FROM GunProduct";
 
+sql  = "SELECT * FROM GunProduct";
 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 try
@@ -118,9 +117,10 @@ try
 	// }
 
 	ResultSet rst = pstmt.executeQuery();
-
+	
+	out.println("<table border=1><tr><th>Product Name</th><th>Classification</th><th>Price</th></tr>");
     while (rst.next()) {
-        out.println(rst.getString("name") + "\n\n");
+    	out.println("<tr><td><a href=gunproduct.jsp?id="+ rst.getInt("pid") +">"+rst.getString("name")+"</a></td><td>"+ rst.getString("classification")+"</td><td>"+currFormat.format(rst.getDouble("price"))+"</td></tr>");
     }
 
 	// out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");
