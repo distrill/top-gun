@@ -1,155 +1,142 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
 <html>
 <head>
-<title>Ray's Grocery Order Processing</title>
+    <title>TOP GUN</title>
 </head>
 <body>
-        
-<%@ include file="header.jsp" %>
-
 <%
-// Get customer id
-String custId = request.getParameter("customerId");
-// Get password
-String password = request.getParameter("password");
-// Get shopping cart
-@SuppressWarnings({"unchecked"})
-HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
-                
-try 
-{	
-	if (custId == null || custId.equals(""))
-		out.println("<h1>Invalid customer id.  Go back to the previous page and try again.</h1>");
-	else if (productList == null)
-		out.println("<h1>Your shopping cart is empty!</h1>");
-	else
-	{	
-		// Check if customer id is a number
-		int num=-1;
-		try
-		{
-			num = Integer.parseInt(custId);
-		} 
-		catch(Exception e)
-		{
-			out.println("<h1>Invalid customer id.  Go back to the previous page and try again.</h1>");
-			return;
-		}		
-        
-		// Get database connection
-        getConnection();
-	                		
-        String sql = "SELECT customerId, cname, password FROM Customer WHERE customerId = ?";	
-				      
-   		con = DriverManager.getConnection(url, uid, pw);
-   		PreparedStatement pstmt = con.prepareStatement(sql);
-   		pstmt.setInt(1, num);
-   		ResultSet rst = pstmt.executeQuery();
-   		int orderId=0;
-   		String custName = "";
+String verified = (String)session.getAttribute("verified");
+if (verified.equals("true")) {
 
-   		if (!rst.next())
-   		{
-   			out.println("<h1>Invalid customer id.  Go back to the previous page and try again.</h1>");
-   		}
-   		else
-   		{	
-   			custName = rst.getString(2);
-			String dbpassword = rst.getString(3);
-				    		
-			// make sure the password on the database is the same as the one the user entered
-			if (!dbpassword.equals(password)) 
-			{
-				out.println("The password you entered was not correct.  Please go back and try again.<br>"); 
-				return;
-			}
-		
-   			// Enter order information into database
-   			sql = "INSERT INTO Orders (customerId, totalAmount) VALUES(?, 0);";
+    // TODO: we need to include better inventory management
 
-   			// Retrieve auto-generated key for orderId
-   			pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-   			pstmt.setInt(1, num);
-   			pstmt.executeUpdate();
-   			ResultSet keys = pstmt.getGeneratedKeys();
-   			keys.next();
-   			orderId = keys.getInt(1);
 
-   			out.println("<h1>Your Order Summary</h1>");
-         	  	out.println("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr>");
+    HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
+    ArrayList product = new ArrayList();
 
-           	double total =0;
-           	Iterator<Map.Entry<String, ArrayList<Object>>> iterator = productList.entrySet().iterator();
-           	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-						
-           	while (iterator.hasNext())
-           	{ 
-           		Map.Entry<String, ArrayList<Object>> entry = iterator.next();
-                   ArrayList<Object> product = (ArrayList<Object>) entry.getValue();
-   				String productId = (String) product.get(0);
-                   out.print("<tr><td>"+productId+"</td>");
-                   out.print("<td>"+product.get(1)+"</td>");
-   				out.print("<td align=\"center\">"+product.get(3)+"</td>");
-                   String price = (String) product.get(2);
-                   double pr = Double.parseDouble(price);
-                   int qty = ( (Integer)product.get(3)).intValue();
-   				out.print("<td align=\"right\">"+currFormat.format(pr)+"</td>");
-                  	out.print("<td align=\"right\">"+currFormat.format(pr*qty)+"</td></tr>");
-                   out.println("</tr>");
-                   total = total +pr*qty;
+    // get db connection
+    getConnection();
 
-   				sql = "INSERT INTO OrderedProduct VALUES(?, ?, ?, ?)";
-   				pstmt = con.prepareStatement(sql);
-   				pstmt.setInt(1, orderId);
-   				pstmt.setInt(2, Integer.parseInt(productId));
-   				pstmt.setInt(3, qty);
-   				pstmt.setString(4, price);
-   				pstmt.executeUpdate();				
-           	}
-           	out.println("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td>"
-                          	+"<td aling=\"right\">"+currFormat.format(total)+"</td></tr>");
-           	out.println("</table>");
+    // get/set order id (this is not the proper way to do it. oh well.) and date
+    int orderId;
+    String getOrderIdSql = "SELECT MAX(oid) as oid FROM GunOrder";
+    PreparedStatement ps1 = con.prepareStatement(getOrderIdSql);
+    ResultSet rs1 = ps1.executeQuery();
+    if(rs1.next()) {
+        orderId = rs1.getInt("oid") + 1;
+    } else {
+        orderId = 1;
+    }
 
-   			// Update order total
-   			sql = "UPDATE Orders SET totalAmount=? WHERE orderId=?";
-   			pstmt = con.prepareStatement(sql);
-   			pstmt.setDouble(1, total);
-   			pstmt.setInt(2, orderId);			
-   			pstmt.executeUpdate();						
 
-   			out.println("<h1>Order completed.  Will be shipped soon...</h1>");
-   			out.println("<h1>Your order reference number is: "+orderId+"</h1>");
-   			out.println("<h1>Shipping to customer: "+custId+" Name: "+custName+"</h1>");
+    // get necessary order stuffs
+    java.sql.Date orderDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+    double orderPrice = Double.parseDouble(request.getParameter("price"));
+    int wid = (Integer)session.getAttribute("custWarehouse");
+    int cid = (Integer)session.getAttribute("custId");
 
-   			// Clear session variables (cart)
-   			session.setAttribute("productList", null);    
-   		}
-   	}
+    // SQL to make new order
+    String newOrderSql =
+        "INSERT INTO GunOrder " +
+        "VALUES (?, ?, ?, ?, ?)";
+
+    // prepare the shit outta that statement
+    PreparedStatement ps2 = con.prepareStatement(newOrderSql);
+    ps2.setInt(1, orderId);
+    ps2.setDate(2, orderDate);
+    ps2.setDouble(3, orderPrice);
+    ps2.setInt(4, wid);
+    ps2.setInt(5, cid);
+
+    // execute the shit outta that statement
+    ps2.executeUpdate();
+
+
+    // prepare statement for getting available gunIds
+    String getGunIdSql =
+        "SELECT MIN(gid) as gunId " +
+        "FROM GunGun " +
+        "WHERE pid = ?";
+    PreparedStatement ps3 = con.prepareStatement(getGunIdSql);
+
+   // prepare a statement for inserting new shippedGuns
+    String newShippedGunSql =
+        "INSERT INTO GunShipped " +
+        "VALUES (?, ?)";
+    PreparedStatement ps4 = con.prepareStatement(newShippedGunSql);
+    ps4.setInt(1, orderId);
+
+    // prepare a statement to remove gun from GunGun once it is shipped
+    String delGunSql =
+        "DELETE FROM GunGun " +
+        "WHERE gid = ?";
+    PreparedStatement ps5 = con.prepareStatement(delGunSql);
+
+    // iterate through the productList and make a shippedGun for each product
+	Iterator iterator = productList.entrySet().iterator();
+	while (iterator.hasNext()) {
+        // get gunId from GunGun table
+        int gid;
+        Map.Entry entry = (Map.Entry)(iterator.next());
+        product = (ArrayList) entry.getValue();
+        ps3.setInt(1, Integer.parseInt(product.get(0).toString()));
+        ResultSet rs3 = ps3.executeQuery();
+        if (rs3.next()) {
+           gid = rs3.getInt("gunId");
+        } else {
+            // something went wrong. TODO: handle this
+            gid=0;
+        }
+
+        // insert new GunShipped
+        ps4.setInt(2, gid);
+        ps4.executeUpdate();
+
+        // delete shipped gun from GunGun
+        ps5.setInt(1, gid);
+        ps5.executeUpdate();
+    }
+	// 	// count++;
+	// 	Map.Entry entry = (Map.Entry)(iterator.next());
+	// 	product = (ArrayList) entry.getValue();
+	// 	// read in values for that product ID
+	// 	out.print("<TR><TD>"+product.get(0)+"</TD>");
+	// 	out.print("<TD>"+product.get(1)+"</TD>");
+    //
+	// 	// out.print("<TD ALIGN=CENTER><INPUT TYPE=\"text\" name=\"newqty"+count+"\" size=\"3\" value=\""
+	// 	// 	+product.get(3)+"\"></TD>");
+	// 	double pr = Double.parseDouble( (String) product.get(2));
+	// 	int qty = ( (Integer)product.get(3)).intValue();
+    //
+	// 	// print out values for that product from shopping cart
+	// 	out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr)+"</TD>");
+	// 	out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr*qty)+"</TD>");
+	// 	// allow the customer to delete items from their shopping cart by clicking here
+	// 	out.println("<TD>&nbsp;&nbsp;&nbsp;&nbsp;<A HREF=\"showcart.jsp?delete="
+	// 		+product.get(0)+"\">Remove Item from Cart</A></TD>");
+	// 	// allow customer to change quantities for a product in their shopping cart
+	// 	out.println("<TD>&nbsp;&nbsp;&nbsp;&nbsp;<INPUT TYPE=BUTTON OnClick=\"update("
+	// 		+product.get(0)+", document.form1.newqty"+count+".value)\" VALUE=\"Update Quantity\">");
+	// 	out.println("</TR>");
+	// 	// keep a running total for all items ordered
+	// 	total = total +pr*qty;
+	// }
+
+    out.print("<h4 align=\"center\">Thank you for  shopping with</h4><br><h2 align=\"center\">TOP GUN</h2>");
+} else {
+    out.print("You must be <a href=\"login\">logged in</a>");
 }
-catch (SQLException ex)
-{ 	out.println(ex);
-}
-finally
-{
-	try
-	{
-		if (con != null)
-			con.close();
-	}
-	catch (SQLException ex)
-	{       out.println(ex);
-	}
-}  
-%>                       				
-
-<h2><a href="shop.html">Back to Main Page</a></h2>
+session.setAttribute("productList", null);
+%>
 
 </body>
 </html>

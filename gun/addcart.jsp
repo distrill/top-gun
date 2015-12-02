@@ -12,9 +12,9 @@ if (productList == null)
 
 // Add new product selected
 // Get product information
-String id = request.getParameter("id");
-String name = request.getParameter("name");
-String price = request.getParameter("price");
+String id = (String)request.getParameter("id");
+String name = (String)request.getParameter("name");
+String price = (String)request.getParameter("price");
 Integer quantity = new Integer(1);
 
 // Store product information in an ArrayList

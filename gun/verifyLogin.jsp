@@ -19,8 +19,18 @@ ResultSet rs = ps.executeQuery();
 
 if (rs.next()) {
     String dbPassword = rs.getString("password");
+    int custId = rs.getInt("cid");
+    String custName = rs.getString("name");
+    String custAddress = rs.getString("address");
+    String custProvince = rs.getString("province");
+    int custWarehouse = rs.getInt("warehouse");
     if (password.equals(dbPassword)) {
         session.setAttribute("verified", "true");
+        session.setAttribute("custId", custId);
+        session.setAttribute("custName", custName);
+        session.setAttribute("custAddress", custAddress);
+        session.setAttribute("custProvince", custProvince);
+        session.setAttribute("custWarehouse", custWarehouse);
     } else {
         session.setAttribute("verified", "false");
     }
@@ -28,4 +38,4 @@ if (rs.next()) {
     session.setAttribute("verified", "false");
 }
 %>
-<jsp:forward page="testing.jsp" />
+<jsp:forward page="shop.html" />

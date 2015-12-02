@@ -6,12 +6,10 @@
 
 <html>
 <head>
-<title>Ray's Grocery</title>
+<title>TOP GUN</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
-<%@ include file="header.jsp" %>
 
 <h2>login:</h2>
 

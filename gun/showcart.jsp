@@ -29,21 +29,22 @@ String update = request.getParameter("update");
 String newqty = request.getParameter("newqty");
 
 // check if shopping cart is empty
-if (productList == null)
-{	out.println("<H1>Your shopping cart is empty!</H1>");
+if (productList == null) {
+	out.println("<H1>Your shopping cart is empty!</H1>");
 	productList = new HashMap();
 }
 else
 {
+out.println("what the heck<br>");
 	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-	
+
 	// if id not null, then user is trying to remove that item from the shopping cart
 	if(id != null && (!id.equals(""))) {
 		if(productList.containsKey(id)) {
 			productList.remove(id);
 		}
 	}
-	
+
 	// if update isn't null, the user is trying to update the quantity
 	if(update != null && (!update.equals(""))) {
 		if (productList.containsKey(update)) { // find item in shopping cart
@@ -76,7 +77,7 @@ else
 			+product.get(3)+"\"></TD>");
 		double pr = Double.parseDouble( (String) product.get(2));
 		int qty = ( (Integer)product.get(3)).intValue();
-		
+
 		// print out values for that product from shopping cart
 		out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr)+"</TD>");
 		out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr*qty)+"</TD>");
@@ -95,16 +96,15 @@ else
 			+"<TD ALIGN=RIGHT>"+currFormat.format(total)+"</TD></TR>");
 	out.println("</TABLE>");
 	//give user option to check out
-	out.println("<H2><A HREF=\"checkout.jsp\">Check Out</A></H2>");
+	// out.println("<H2><A HREF=\"checkout.jsp\">Check Out</A></H2>");
 }
 // set the shopping cart
 session.setAttribute("productList", productList);
 // give the customer the option to add more items to their shopping cart
+// session.setAttribute("productList", null);
 %>
+<H2><A HREF="confirm.jsp">Check Out</A></H2>
 <H2><A HREF="listprod.jsp">Continue Shopping</A></H2>
 </FORM>
 </BODY>
-</HTML> 
-
-
-
+</HTML>
