@@ -70,57 +70,57 @@ boolean hasNameParam = name != null && !name.equals("");
 boolean hasCategoryParam = category != null && !category.equals("") && !category.equals("All");
 String filter = "", sql = "";
 
-/*  if (hasNameParam && hasCategoryParam)
+  if (hasNameParam && hasCategoryParam)
  {
  	filter = "<h3>Products containing '"+name+"' in category: '"+category+"'</h3>";
  	name = '%'+name+'%';
- 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ? AND categoryName = ?";
+ 	sql = "SELECT * FROM GunProduct WHERE name LIKE ? AND category = ?";
  }
  else if (hasNameParam)
  {
  	filter = "<h3>Products containing '"+name+"'</h3>";
  	name = '%'+name+'%';
- 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE productName LIKE ?";
+ 	sql = "SELECT * FROM GunProduct WHERE name LIKE ?";
  }
  else if (hasCategoryParam)
  {
  	filter = "<h3>Products in category: '"+category+"'</h3>";
- 	sql = "SELECT productId, productName, price, categoryName FROM Product WHERE categoryName = ?";
+ 	sql = "SELECT * FROM GunProduct WHERE category = ?";
  }
  else
  {
  	filter = "<h3>All Products</h3>";
- 	sql = "SELECT productId, productName, price, categoryName FROM Product";
- } */
+ 	sql = "SELECT * FROM GunProduct";
+ } 
 
 out.println("All Gun Products");
 
 
-sql  = "SELECT * FROM GunProduct";
+//sql  = "SELECT * FROM GunProduct";
 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 try
 {
 	getConnection();
 	PreparedStatement pstmt = con.prepareStatement(sql);
-	// if (hasNameParam)
-	// {
-	// 	pstmt.setString(1, name);
-	// 	if (hasCategoryParam)
-	// 	{
-	// 		pstmt.setString(2, category);
-	// 	}
-	// }
-	// else if (hasCategoryParam)
-	// {
-	// 	pstmt.setString(1, category);
-	// }
+	 if (hasNameParam)
+	 {
+	 	pstmt.setString(1, name);
+	 	if (hasCategoryParam)
+	 	{
+	 		pstmt.setString(2, category);
+	 	}
+	 }
+	 else if (hasCategoryParam)
+	 {
+	 	pstmt.setString(1, category);
+	 }
 
 	ResultSet rst = pstmt.executeQuery();
 	
 	out.println("<table border=1><tr><th>Product Name</th><th>Classification</th><th>Price</th></tr>");
     while (rst.next()) {
-    	out.println("<tr><td><a href=gunproduct.jsp?id="+ rst.getInt("pid") +">"+rst.getString("name")+"</a></td><td>"+ rst.getString("classification")+"</td><td>"+currFormat.format(rst.getDouble("price"))+"</td></tr>");
+    	out.println("<tr><td><a href=gunproduct.jsp?id="+ rst.getInt("pid") +">"+rst.getString("name")+"</a></td><td>"+ rst.getString("category")+"</td><td>"+currFormat.format(rst.getDouble("price"))+"</td></tr>");
     }
 
 	// out.print("<font face=\"Century Gothic\" size=\"2\"><table class=\"table\" border=\"1\"><tr><th class=\"col-md-1\"></th><th>Product Name</th>");

@@ -21,6 +21,7 @@ if (rs.next()) {
     String dbPassword = rs.getString("password");
     if (password.equals(dbPassword)) {
         session.setAttribute("verified", "true");
+        session.setAttribute("user", rs);
     } else {
         session.setAttribute("verified", "false");
     }
