@@ -4,9 +4,10 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.Map" %>
 
+<!DOCTYPE html>
 <HTML>
 <HEAD>
-<TITLE>Your Shopping Cart</TITLE>
+	<%@ include file="head.jsp" %>
 </HEAD>
 <BODY>
 
@@ -35,7 +36,6 @@ if (productList == null) {
 }
 else
 {
-out.println("what the heck<br>");
 	NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
 	// if id not null, then user is trying to remove that item from the shopping cart

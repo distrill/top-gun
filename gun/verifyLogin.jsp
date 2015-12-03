@@ -38,4 +38,4 @@ if (rs.next()) {
     session.setAttribute("verified", "false");
 }
 %>
-<jsp:forward page="shop.html" />
+<jsp:forward page="listprod.jsp" />

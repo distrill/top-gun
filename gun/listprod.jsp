@@ -5,10 +5,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
-<title>Ray's Grocery</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
+    <%@ include file="head.jsp" %>
 </head>
 <body>
 
@@ -49,15 +49,15 @@ catch (SQLException ex)
 
 <%
 // Colors for different item categories
-HashMap colors = new HashMap();		// This may be done dynamically as well, a little tricky...
-colors.put("Beverages", "#0000FF");
-colors.put("Condiments", "#FF0000");
-colors.put("Confections", "#000000");
-colors.put("Dairy Products", "#6600CC");
-colors.put("Grains/Cereals", "#55A5B3");
-colors.put("Meat/Poultry", "#FF9900");
-colors.put("Produce", "#00CC00");
-colors.put("Seafood", "#FF66CC");
+// HashMap colors = new HashMap();		// This may be done dynamically as well, a little tricky...
+// colors.put("Beverages", "#0000FF");
+// colors.put("Condiments", "#FF0000");
+// colors.put("Confections", "#000000");
+// colors.put("Dairy Products", "#6600CC");
+// colors.put("Grains/Cereals", "#55A5B3");
+// colors.put("Meat/Poultry", "#FF9900");
+// colors.put("Produce", "#00CC00");
+// colors.put("Seafood", "#FF66CC");
 %>
 
 <%

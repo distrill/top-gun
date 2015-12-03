@@ -6,17 +6,18 @@
 <%@ page import="java.util.Map" %>
 <%@ include file="jdbc.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
-<title>Ray's Grocery Order Processing</title>
+<%@ include file="head.jsp" %>
 </head>
 <body>
 
 <%@ include file="header.jsp" %>
 
 <%
-String  verified = (String)session.getAttribute("verified");
-if (verified.equals("true")) {
+// String  verified = (String)session.getAttribute("verified");
+// if (verified != null && verified.equals("true")) {
     // get things started
     @SuppressWarnings({"unchecked"})
     NumberFormat currFormat = NumberFormat.getCurrencyInstance();
@@ -96,9 +97,9 @@ if (verified.equals("true")) {
             }
         }
     }
-} else {
-    out.println("You must be logged in.<br>Please<a href=\"login.jsp\">log in</a>");
-}
+// } else {
+//     out.println("You must be logged in.<br>Please<a href=\"login.jsp\">log in</a>");
+// }
 
 %>
 

@@ -8,14 +8,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>TOP GUN</title>
+	<%@ include file="head.jsp" %>
 </head>
 <body>
+
+<%@ include file="header.jsp" %>
+
 <%
-String verified = (String)session.getAttribute("verified");
-if (verified.equals("true")) {
+// String verified = (String)session.getAttribute("verified");
+// if (verified.equals("true")) {
 
     // TODO: we need to include better inventory management
 
@@ -105,36 +109,11 @@ if (verified.equals("true")) {
         ps5.setInt(1, gid);
         ps5.executeUpdate();
     }
-	// 	// count++;
-	// 	Map.Entry entry = (Map.Entry)(iterator.next());
-	// 	product = (ArrayList) entry.getValue();
-	// 	// read in values for that product ID
-	// 	out.print("<TR><TD>"+product.get(0)+"</TD>");
-	// 	out.print("<TD>"+product.get(1)+"</TD>");
-    //
-	// 	// out.print("<TD ALIGN=CENTER><INPUT TYPE=\"text\" name=\"newqty"+count+"\" size=\"3\" value=\""
-	// 	// 	+product.get(3)+"\"></TD>");
-	// 	double pr = Double.parseDouble( (String) product.get(2));
-	// 	int qty = ( (Integer)product.get(3)).intValue();
-    //
-	// 	// print out values for that product from shopping cart
-	// 	out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr)+"</TD>");
-	// 	out.print("<TD ALIGN=RIGHT>"+currFormat.format(pr*qty)+"</TD>");
-	// 	// allow the customer to delete items from their shopping cart by clicking here
-	// 	out.println("<TD>&nbsp;&nbsp;&nbsp;&nbsp;<A HREF=\"showcart.jsp?delete="
-	// 		+product.get(0)+"\">Remove Item from Cart</A></TD>");
-	// 	// allow customer to change quantities for a product in their shopping cart
-	// 	out.println("<TD>&nbsp;&nbsp;&nbsp;&nbsp;<INPUT TYPE=BUTTON OnClick=\"update("
-	// 		+product.get(0)+", document.form1.newqty"+count+".value)\" VALUE=\"Update Quantity\">");
-	// 	out.println("</TR>");
-	// 	// keep a running total for all items ordered
-	// 	total = total +pr*qty;
-	// }
 
     out.print("<h4 align=\"center\">Thank you for  shopping with</h4><br><h2 align=\"center\">TOP GUN</h2>");
-} else {
-    out.print("You must be <a href=\"login\">logged in</a>");
-}
+// } else {
+//     out.print("You must be <a href=\"login\">logged in</a>");
+// }
 session.setAttribute("productList", null);
 %>
 

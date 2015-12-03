@@ -1,14 +1,13 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ include file="jdbc.jsp" %>
 
+<!DOCTYPE html>
 <html>
 <head>
-<title>Ray's Grocery Order List</title>
-
-<link href="css/bootstrap.min.css" rel="stylesheet">
+	<%@ include file="head.jsp" %>
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
 <h1>Order List</h1>
 
 <%
@@ -18,10 +17,10 @@ String sql = "SELECT O.orderId, O.CustomerId, totalAmount, cname, productId, qua
 
 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 
-try 
-{	
+try
+{
 	getConnection();
-	ResultSet rst = con.createStatement().executeQuery(sql);		
+	ResultSet rst = con.createStatement().executeQuery(sql);
 	out.println("<table class=\"table\" border=\"1\">");
 	out.print("<tr><th>Order Id</th><th>Customer Id</th><th>Customer Name</th>");
 	out.println("<th>Total Amount</th></tr>");
@@ -32,7 +31,7 @@ try
 
 	// Note: This version requires only one query rather than one for each order.  More efficient if listing all orders.
 	while (rst.next())
-	{	
+	{
 		int orderId = rst.getInt(1);
 
 		if (orderId != lastOrderId)
@@ -53,7 +52,7 @@ try
 			out.print("<td>"+rst.getString(4)+"</td>");
 			out.print("<td>"+currFormat.format(rst.getDouble(3))+"</td>");
 			out.println("</tr>");
-		
+
 			out.println("<tr align=\"right\"><td colspan=\"4\"><table class=\"table\" border=\"1\">");
 			out.println("<th>Product Id</th> <th>Quantity</th> <th>Price</th></tr>");
 		}
@@ -71,19 +70,19 @@ try
 	}
 
 	if (lastOrderId != -1)
-	{		
+	{
 		out.print("<tr><td><span class=\"label label-primary\">Total:</span></td>");
 		out.print("<td>"+totalQuantity+"</font></td>");
 		out.println("<td>"+currFormat.format(totalAmount)+"</font></td></tr>");
 		totalQuantity = 0;
 		totalAmount = 0;
-		out.println("</table></td></tr>");	// Close previous table		
+		out.println("</table></td></tr>");	// Close previous table
     }
 
 	out.println("</table>");
 }
-catch (SQLException ex) 
-{ 	out.println(ex); 
+catch (SQLException ex)
+{ 	out.println(ex);
 }
 finally
 {
@@ -93,12 +92,10 @@ finally
 	}
 	catch (SQLException ex)
 	{
-		out.println(ex); 
+		out.println(ex);
 	}
 }
 %>
 
 </body>
 </html>
-
-
