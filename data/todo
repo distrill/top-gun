@@ -1,7 +1,26 @@
+Walkthrough
+
+    admin
+        view all orders
+        add gun
+        add customer
+            create account
+                assume that customers can only be added by admin 'at a mall kiosk'
+                this means we can assume that all customers are allowed to legally purchase guns
+
+    Customer
+        purchase product
+        view order history
+        write review / update / delete
+
+
+
+
+
+
 Still To Do:
     Admin Panel
         view all orders
-        update quantities(?)
         add new products(?)
     Create Account
     Front Page
