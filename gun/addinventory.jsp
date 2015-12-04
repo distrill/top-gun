@@ -27,9 +27,9 @@
 	try{
 		getConnection();
 	 	Statement stmt = con.createStatement();
-		ResultSet rst = stmt.executeQuery("SELECT pid FROM GunProduct");
+		ResultSet rst = stmt.executeQuery("SELECT pid,name FROM GunProduct");
 	        while (rst.next())
-			out.println("<option>"+rst.getString(1)+"</option>");
+			out.println("<option value="+rst.getString(1)+" >"+rst.getString(2)+"</option>");
 	}
 	catch (SQLException ex)
 	{       out.println(ex);
