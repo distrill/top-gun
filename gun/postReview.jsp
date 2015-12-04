@@ -7,7 +7,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
-<% 
+<%
 
 ResultSet currUser = (ResultSet) session.getAttribute("user");
 
@@ -15,7 +15,7 @@ String sql;
 String rating = request.getParameter("score");
 String description = request.getParameter("description");
 String pid = request.getParameter("id");
-String cid = currUser.getString("cid");
+String cid = (String)getAttribute("custId");
 
 Date date = new Date();
 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -40,7 +40,7 @@ try
 	pstmt.setString(2,rating);
 	pstmt.executeUpdate();
 	closeConnection();
-} 
+}
 
 catch (SQLException ex) {
 	out.println(ex);
