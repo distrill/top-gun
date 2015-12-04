@@ -1,6 +1,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
+<%@ page import="java.net.URLEncoder" %>
 <%@ include file="jdbc.jsp" %>
 
 <!DOCTYPE html>
@@ -48,14 +49,15 @@ try
 	}
 
 	out.println("<h3>Price : "+currFormat.format(productInfo.getDouble("price"))+"</h3>");
-	if(stock.next()){
-		out.println("<h3><a href = addcart.jsp?id="+stock.getInt("pid")+">Add to Cart</a></h3>");
+	if(productInfo.getInt("Quantity")>0){
+		String str = URLEncoder.encode(productInfo.getString("name"),"UTF-8");
+		out.println("<h3><a href = addcart.jsp?id="+request.getParameter("id")+"&name="+str+"&price="+productInfo.getDouble("price")+">Add to Cart</a></h3>");
 	}
 	else{
 		out.println("<h3>This Product is out of stock. Please check back later.</h3>");
 	}
 
-
+	out.println("<h3><a href=review.jsp?id=" + request.getParameter("id") + ">Write a review for this product.</a></h3>");
 	if(reviews.next()){
 	out.println("<table border = 1><tr><th>Customer Name</th><th>Date</th><th>Rating</th><th>Review</th></tr>");
 	out.println("<tr><td>"+reviews.getString("name")+"</td><td>"+reviews.getString("date")+"</td><td>"+ reviews.getInt("rating")+"</td><td>"+ reviews.getString("description")+"</td></tr>");
