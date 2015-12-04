@@ -12,7 +12,6 @@
 <body>
     <!-- temp hard code header to prevent redirect loop -->
     <H1 align="center">TOP GUN</H1>
-    <h5 align="center"><a href="logout.jsp">log out</a></h5>
     <hr>
     <%-- <%@ include file="header.jsp" %> --%>
 
@@ -20,7 +19,7 @@
 
 <form method="get" action="verifyLogin.jsp">
     <input type="text" name="email" placeholder="email"><br>
-    <input type="text" name="password" placeholder="password"><br>
+    <input type="password" name="password" placeholder="password"><br>
     <input type="submit" value="login">
 </form>
 
