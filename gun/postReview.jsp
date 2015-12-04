@@ -15,7 +15,7 @@ String sql;
 String rating = request.getParameter("score");
 String description = request.getParameter("description");
 String pid = request.getParameter("id");
-String cid = (String)getAttribute("custId");
+String cid = (String)session.getAttribute("custId");
 
 Date date = new Date();
 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
