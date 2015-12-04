@@ -24,6 +24,7 @@ if (rs.next()) {
     String custAddress = rs.getString("address");
     String custProvince = rs.getString("province");
     int custWarehouse = rs.getInt("warehouse");
+    int isAdmin = rs.getInt("admin");
     if (password.equals(dbPassword)) {
         session.setAttribute("verified", "true");
         session.setAttribute("custId", custId);
@@ -31,6 +32,7 @@ if (rs.next()) {
         session.setAttribute("custAddress", custAddress);
         session.setAttribute("custProvince", custProvince);
         session.setAttribute("custWarehouse", custWarehouse);
+        session.setAttribute("isAdmin", isAdmin);
     } else {
         session.setAttribute("verified", "false");
     }

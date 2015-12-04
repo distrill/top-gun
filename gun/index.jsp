@@ -15,15 +15,17 @@
     //     // out.println("verified<br>" + custId);
     //     response.sendRedirect("shop.html");
     // } else {
-        out.print(
-            "<h2>login:</h2>" +
-            "<form method=\"get\" action=\"verifyLogin.jsp\">" +
-                "<input type=\"text\" name=\"email\" placeholder=\"email\"><br>" +
-                "<input type=\"text\" name=\"password\" placeholder=\"password\"><br>" +
-                "<input type=\"submit\" value=\"login\">" +
-            "</form>"
-        );
+        // out.print(
+        //     "<h2>login:</h2>" +
+        //     "<form method=\"get\" action=\"verifyLogin.jsp\">" +
+        //         "<input type=\"text\" name=\"email\" placeholder=\"email\"><br>" +
+        //         "<input type=\"text\" name=\"password\" placeholder=\"password\"><br>" +
+        //         "<input type=\"submit\" value=\"login\">" +
+        //     "</form>"
+        // );
     // }
 %>
+lander page do cool things here.<br>
+for now just link to <a href="listprod.jps">listprod.jsp</a>.
 </body>
 </html>
