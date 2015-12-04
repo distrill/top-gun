@@ -17,6 +17,7 @@ ps.setString(1, email);
 
 ResultSet rs = ps.executeQuery();
 
+int isAdmin = 0;
 if (rs.next()) {
     String dbPassword = rs.getString("password");
     int custId = rs.getInt("cid");
@@ -24,7 +25,7 @@ if (rs.next()) {
     String custAddress = rs.getString("address");
     String custProvince = rs.getString("province");
     int custWarehouse = rs.getInt("warehouse");
-    int isAdmin = rs.getInt("admin");
+    isAdmin = rs.getInt("admin");
     if (password.equals(dbPassword)) {
         session.setAttribute("verified", "true");
         session.setAttribute("custId", custId);
@@ -39,5 +40,10 @@ if (rs.next()) {
 } else {
     session.setAttribute("verified", "false");
 }
+if (isAdmin == 0) {
+    response.sendRedirect("listprod.jsp");
+} else {
+    response.sendRedirect("admin.jsp");
+}
 %>
-<jsp:forward page="listprod.jsp" />
+<%-- <jsp:forward page="listprod.jsp" /> --%>

@@ -75,7 +75,7 @@
    // prepare a statement for inserting new shippedGuns
     String newShippedGunSql =
         "INSERT INTO GunShipped " +
-        "VALUES (?, ?)";
+        "VALUES (?, ?, ?)";
     PreparedStatement ps4 = con.prepareStatement(newShippedGunSql);
     ps4.setInt(1, orderId);
 
@@ -87,12 +87,14 @@
 
     // iterate through the productList and make a shippedGun for each product
 	Iterator iterator = productList.entrySet().iterator();
+	int pid;
 	while (iterator.hasNext()) {
         // get gunId from GunGun table
-        int gid;
         Map.Entry entry = (Map.Entry)(iterator.next());
         product = (ArrayList) entry.getValue();
-        ps3.setInt(1, Integer.parseInt(product.get(0).toString()));
+        int gid;
+		pid = Integer.parseInt(product.get(0).toString());
+        ps3.setInt(1, pid);
         ResultSet rs3 = ps3.executeQuery();
         if (rs3.next()) {
            gid = rs3.getInt("gunId");
@@ -103,6 +105,7 @@
 
         // insert new GunShipped
         ps4.setInt(2, gid);
+		ps4.setInt(3, pid);
         ps4.executeUpdate();
 
         // delete shipped gun from GunGun

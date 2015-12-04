@@ -7,6 +7,8 @@
         int isAdmin = (Integer)session.getAttribute("isAdmin");
         if (isAdmin == 1) {
             out.print("<h5 align=\"center\"><a href=\"admin.jsp\">admin</a></h5>");
+        } else {
+            out.print("<h5 align=\"center\"><a href=\"vieworders.jsp\">my orders</a></h5>");
         }
     }
 %>
