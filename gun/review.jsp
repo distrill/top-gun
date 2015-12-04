@@ -6,7 +6,7 @@
 <title>Write a review</title>
 <body>
 <h3>Write your review here.</h3>
-<p>If you have already written a review you may change it by resubmiting.</p>
+<p>If you have already written a review you may change it by resubmitting.</p>
 <form method = "post" action = "postReview.jsp">
   <input type ="hidden" name = "id" value =<%out.println(request.getParameter("id"));%>>
   <select name = "score">
