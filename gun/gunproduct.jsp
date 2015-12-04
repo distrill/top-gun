@@ -14,6 +14,12 @@
 <%@ include file="header.jsp" %>
 
 <%
+if(request.getParameter("error") != null){
+	if(request.getParameter("error").equals("noReview"))
+    	{
+    		out.println("<font size=3 color=red>You have to write a review to be able to delete one.</font>");
+   	 	}
+}
 NumberFormat currFormat = NumberFormat.getCurrencyInstance();
 String getProductInfo = "Select * From GunProduct Where pid ='"+request.getParameter("id")+"'";
 String getStock = "Select * From GunGun where pid ='"+request.getParameter("id")+"'";
